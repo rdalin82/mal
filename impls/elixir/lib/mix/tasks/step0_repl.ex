@@ -2,29 +2,26 @@ defmodule Mix.Tasks.Step0Repl do
   def run(_), do: loop()
 
   defp loop do
-    Mal.Core.readline("user> ")
-      |> read_eval_print
-      |> IO.puts
-
+    read()
+    |> eval()
+    |> print()
     loop()
   end
 
-  defp read(input) do
+  defp read() do
+    IO.write("user> ")
+    input = IO.read(:stdio, :line)
     input
   end
+
+  defp eval(:eof), do: exit(:normal)
 
   defp eval(input) do
     input
   end
 
   defp print(input) do
-    input
+    IO.write(input)
   end
 
-  defp read_eval_print(:eof), do: exit(:normal)
-  defp read_eval_print(line) do
-    read(line)
-      |> eval
-      |> print
-  end
 end
